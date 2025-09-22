@@ -1,9 +1,54 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Images\bg1.jpg" />
+    <Content Remove="wwwroot\Images\bg2.jpg" />
+    <Content Remove="wwwroot\Images\bg3.jpg" />
+    <Content Remove="wwwroot\Images\bg3.png" />
+    <Content Remove="wwwroot\Images\bg4.jpg" />
+    <Content Remove="wwwroot\Images\free-paper-texture-4.jpg" />
+    <Content Remove="wwwroot\Images\free-paper-texture-40.jpg" />
+    <Content Remove="wwwroot\Images\free-paper-texture-40_cut.jpg" />
+    <Content Remove="wwwroot\Images\free-paper-texture-40_cut_dark.png" />
+    <Content Remove="wwwroot\Images\free-paper-texture-40_cut_dark_cont.png" />
+    <Content Remove="wwwroot\Images\free-paper-texture-40_cut_sepia.jpg" />
+    <Content Remove="wwwroot\Images\free-paper-texture-49.jpg" />
+    <Content Remove="wwwroot\Images\free-paper-texture-8.jpg" />
+    <Content Remove="wwwroot\Images\free-paper-texture-8_grey_dark.png" />
+    <Content Remove="wwwroot\Images\free-paper-texture-9.jpg" />
+    <Content Remove="wwwroot\Images\Lib160h.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Authentication\Authentication.csproj" />
+    <ProjectReference Include="..\MRWBlobs_DAL\MRWBlobs_DAL.csproj" />
+    <ProjectReference Include="..\SMCommonUtilities\SMCommonUtilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\LogIn\" />
+  </ItemGroup>
 
 </Project>

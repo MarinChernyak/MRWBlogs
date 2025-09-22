@@ -1,0 +1,37 @@
+﻿
+.item2 {
+    border: 1px solid #ebebeb;
+    background-color: chartreuse;
+    color: navy;
+    height: 100px;
+    display: flex;
+    flex: 1 1 auto;
+}
+.main-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    margin: 50px 0 50px 0;
+    width: 30%;
+    display: inline-block;
+    border: solid 2px #490404;
+    border-radius: 7px;
+    background-color: antiquewhite;
+    color: darkgray;
+    font-family: 'Baskerville Old Face';
+    font-size: 1.5rem;
+    height:50%;
+    min-height:50%;
+    opacity:1;
+}
+
+.main-section p {
+    padding: 5px;
+    color: black;
+    opacity: 1;
+}
+.main-section:first-child{
+    margin-left:3%;
+}
+.main-section:last-child{
+    margin-right:3%;
+}

@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36119.2 d17.14
+VisualStudioVersion = 17.14.36119.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRWBlogs", "MRWBlogs.csproj", "{6BE4E18D-5EB9-48F0-A84C-47427ED4FE99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRWBlobs_DAL", "..\MRWBlobs_DAL\MRWBlobs_DAL.csproj", "{B6BB4B23-28B6-4AFD-A968-EF21AB089E6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMCommonUtilities", "..\SMCommonUtilities\SMCommonUtilities.csproj", "{F95C892C-7230-5F8B-4B53-F68D9F607999}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "..\Authentication\Authentication.csproj", "{EF5114EB-B753-AD60-DF89-A2BEEC227848}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{6BE4E18D-5EB9-48F0-A84C-47427ED4FE99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BE4E18D-5EB9-48F0-A84C-47427ED4FE99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE4E18D-5EB9-48F0-A84C-47427ED4FE99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6BB4B23-28B6-4AFD-A968-EF21AB089E6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6BB4B23-28B6-4AFD-A968-EF21AB089E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6BB4B23-28B6-4AFD-A968-EF21AB089E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BB4B23-28B6-4AFD-A968-EF21AB089E6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95C892C-7230-5F8B-4B53-F68D9F607999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95C892C-7230-5F8B-4B53-F68D9F607999}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95C892C-7230-5F8B-4B53-F68D9F607999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F95C892C-7230-5F8B-4B53-F68D9F607999}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF5114EB-B753-AD60-DF89-A2BEEC227848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF5114EB-B753-AD60-DF89-A2BEEC227848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF5114EB-B753-AD60-DF89-A2BEEC227848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF5114EB-B753-AD60-DF89-A2BEEC227848}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using MRWBlobs_DAL.Entities;
 using MRWBlogs.Components;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+var conString = builder.Configuration.GetConnectionString("MRWBlogsConnection") ??
+     throw new InvalidOperationException("Connection string 'MRWBlogsConnection'" +
+    " not found.");
+builder.Services.AddDbContext<MRWBlogsContext>(options =>
+    options.UseSqlServer(conString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
