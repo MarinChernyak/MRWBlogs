@@ -1,6 +1,7 @@
-a{
-    text-decoration:none;
+﻿a {
+    text-decoration: none;
 }
+
 .welcome_label {
     font-family: 'Segoe Script';
     color: lightgoldenrodyellow;
@@ -29,35 +30,22 @@ a{
     width: 70% !important;
     display: inline-block;
     position: relative;
-
-}
-.welcome_item::first-line {
-margin-left:10%;
-}
-.welcome_item_user {
-    width: 50% !important;
-    display: inline-block;
-    position: relative;
-
 }
 
-    .welcome_item_user::first-line {
+    .welcome_item::first-line {
         margin-left: 10%;
     }
+
 .menu_item {
     display: inline-block;
     position: relative;
 }
+
 .menu_item_search {
-    display: inline-block;    
+    display: inline-block;
     position: relative;
 }
-.link_item {
-    text-decoration: none;
-}
-.link_item:hover {
-    cursor:pointer;
-}
+
 .search_item {
     border-radius: 7px;
     display: inline;

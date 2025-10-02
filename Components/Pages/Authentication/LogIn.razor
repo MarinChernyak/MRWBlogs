@@ -1,0 +1,107 @@
+﻿@page "/login"
+@using MRWBlogs.Models.LogIn
+@using System.Text.Json
+@using MRWBlogs.Utilities
+@* @using Microsoft.AspNetCore.Http
+@inject PersistentComponentState ApplicationState *@
+@inject NavigationManager NavigationManager
+@layout GeneralLayout
+@rendermode InteractiveServer
+
+<EditForm FormName="frmProduct" Model="authenticator"  OnSubmit="HandleSubmit">
+   
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+    <section id="LogIn">
+        
+            <div class="container">
+            <div class="HolderMsg">
+                <div class="ErrMsg">@authenticator.ErrorMessage </div>
+                @if (IsProcesing)
+                {
+                    <div class="InfoMsg">Processing... </div>
+                }
+            </div>
+            <fieldset>
+                <legend>Log in Form</legend>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls">User Name</label>
+                    <input type="text" class="form-control midium_txt" id="txtUserjName" placeholder="UserName is required" @bind-value="user_name">
+                </div>
+                <div class="mb-3">
+                    <label for="Password" class="form-label labels_of_controls">Password</label>
+                    <input type="password" class="form-control midium_txt" id="txtPass" placeholder="Password is required" @bind-value="password">
+                </div>
+                <div class="mb-3">
+                    <input type="checkbox" id="chRemember" @bind-value=remember_me>
+                    <label  class="form-label labels_of_controls">Remember me...</label>
+
+                </div>
+                <div class="mb-3">
+                    <a class="alink" href="registration">Sign up...</a>                
+                </div>
+                <div class="mb-3">
+                    <a class="alink" href="resetpassword">Forgot password?</a>                
+                </div>
+
+
+
+                <div class="col-md-3 form-group align-center mt-3">
+                    <button type="submit" class="btn btn-outline-warning btn-txt">Log in</button>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+</EditForm>
+@code {
+    private string user_name = string.Empty;
+    private string password = string.Empty;
+    private bool remember_me = false;
+    private LogInModel authenticator = new();
+    private bool IsProcesing = false;
+    private PersistingComponentStateSubscription persistingSubscription;
+    // [Inject]
+    // public IHttpContextAccessor HttpContextAccessor { get; set; }
+    [Inject]
+    public ICookie cookie { get; set; }
+
+    private string token=string.Empty;
+    private int ulevel = 0;
+
+    private async Task HandleSubmit()
+    {
+        IsProcesing = true;
+
+        authenticator = new LogInModel
+        {
+            UserName = user_name,
+            Password = password,
+            ShouldRememberMe = remember_me
+        };
+        bool brez = authenticator.Authenticate();
+        if (brez)
+        {
+            if (!string.IsNullOrEmpty(authenticator.UserToken))
+                token = authenticator.UserToken;
+            else
+            {
+                token = authenticator.UpdateToken();
+            }
+
+            if (cookie is not null)
+            {
+                await cookie.SetValue(SMAuthentication.Constants.Values.UserToken, token, remember_me ? 30 : 1);
+                await cookie.SetValue(SMAuthentication.Constants.Values.UserLevel, authenticator.UserLevel.ToString(), remember_me ? 30 : 1);
+                //string test = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken);
+            }
+            NavigationManager.NavigateTo("/", forceLoad: true);
+        }
+
+
+            // ApplicationState.PersistAsJson(SMAuthentication.Constants.Values.UserToken, token);
+            // ApplicationState.PersistAsJson(SMAuthentication.Constants.Values.UserLevel, authenticator.UserLevel.ToString());
+            IsProcesing = false;            
+            
+        }        
+    }
+}

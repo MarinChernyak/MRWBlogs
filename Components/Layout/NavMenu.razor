@@ -1,6 +1,9 @@
-﻿<header>
+﻿@using MRWBlogs.Utilities
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<header>
     <div class="container-fluid">
-        <span class="welcome_item">
+        <span class="@welcome_class">
             <a class="welcome_label" href="/"><span class="welcome_label">Blogs of my real world...</span></a>
         </span>
 
@@ -10,18 +13,22 @@
         <span class="menu-item">
             <a href="createblog"><span class="menu_labels">About</span></a>
         </span>
-        <span class="menu-item">
-            @if (string.IsNullOrEmpty(user_name))
+       
+            @if (string.IsNullOrEmpty(token))
             {
-                <a class="text-dark" asp-area="" asp-controller="LogIn" asp-action="LogIn"><span class="menu_labels">Login</span></a>
+             <span class="menu-item">
+                <a href="login"><span class="menu_labels">Login</span></a>
+            </span>
             }
             else
             {
-                <a class="text-dark" href="createblog"><span class="menu_labels_grey">My Account</span></a>
-                <a class="text-dark" href="createblog"><span class="menu_labels_grey">Create blog</span></a>
-                <a class="text-dark" href="LogOut"><span class="menu_labels_grey">Logout</span></a>
+                <span class="menu-item_medium">
+                <a class="text-dark" href="createblog"><span class="menu_labels">Create blog</span></a>
+                <a class="text-dark" href="createblog"><span class="menu_labels">My Account</span></a>
+                <span class="menu_labels_grey link_item" @onclick="onLogOut">Logout</span>
+                </span>
             }
-        </span>        
+                
         <div class="menu_item_search">
                 <form action="#">
                 <input type="text" placeholder="Search.." name="search" class="search_item">
@@ -32,11 +39,31 @@
 </header>
 
 @code {
-    private string user_name = "sss";
-    // protected override void OnInitialized()
-    // {
-    //     user_name = HttpContextAccessor.HttpContext.Session.GetString("user_name");
-    // }
-    // [Inject]
-    // public IHttpContextAccessor HttpContextAccessor { get; set; }
+    private string token = "";
+    private string welcome_class = "welcome_item";
+    [Inject]
+    public ICookie cookie { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (cookie is not null && firstRender)
+        {
+            token = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken);
+            if (!string.IsNullOrEmpty(token))
+            {
+                welcome_class = "welcome_item_user";
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task onLogOut()
+    {
+        if (cookie is not null)
+        {
+            await cookie.SetValue(SMAuthentication.Constants.Values.UserToken, "", -1);
+            await cookie.SetValue(SMAuthentication.Constants.Values.UserLevel, "0", -1);
+            NavigationManager.NavigateTo("/", forceLoad: true);
+        }
+    }
+
 }
