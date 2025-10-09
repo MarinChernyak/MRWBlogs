@@ -34,7 +34,7 @@ body {
 main {
     position: relative;
 }
-    main::before {
+    main#main1::before {
         content: "";
         position: absolute;
         top: 0;
@@ -46,19 +46,32 @@ main {
         opacity: 0.8;
         z-index: 1;
     }
+    main#main2::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color:#065176;
+        opacity: 0.8;
+        z-index: 1;
+    }
     .main-content{
         position:relative;
         z-index:2;
     }
-.main {
-    position: relative;
-    background-color: #0e648f;
-}
 
 .container2 {
     justify-content: space-between;
     display: flex;
     width: 100%;
+}
+.container3 {
+    justify-content: space-between;
+    display: block;
+    width: 100%;
+    height:100%;
 }
 header {
     width: 100%;
@@ -160,7 +173,7 @@ h2 {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: antiquewhite;
     font-size: 1.5rem;
-    display: block;
+    display: flex;
     margin-bottom: 30px;
     text-indent: 50px;
 }

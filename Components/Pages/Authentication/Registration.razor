@@ -1,6 +1,97 @@
 ﻿@page "/registration"
+@using MRWBlogs.Models.LogIn
+@using MRWBlogs.Utilities
+@using SMAuthentication.Models
+@inject NavigationManager NavigationManager
+
+
 <h3>Registration</h3>
 
-@code {
 
+<EditForm FormName="frmProduct" Model="registrator" OnSubmit="HandleSubmit">
+   
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+    <section id="LogIn">        
+        <div class="container">
+        <div class="HolderMsg">
+            <div class="ErrMsg"> @ErrMessage </div>
+            @if (IsProcesing)
+            {
+                <div class="InfoMsg">Processing... </div>
+            }
+        </div>
+        <fieldset>
+            <legend>Log in Form</legend>
+            <div class="mb-3">
+                <label class="form-label labels_of_controls">User Name</label>
+                <input type="text" class="form-control midium_txt" id="txtUserName" placeholder="UserName is required" @bind-value="user_name">
+            </div>
+            <div class="mb-3">
+                <label for="Password" class="form-label labels_of_controls">Password</label>
+                <input type="password" class="form-control midium_txt" id="txtPass1" placeholder="Password is required" @bind-value="password">
+            </div>
+            <div class="mb-3">
+                    <label for="Password" class="form-label labels_of_controls">Confirm password</label>
+                <input type="password" class="form-control midium_txt" id="txtPass2" placeholder="Confirm the password" @bind-value="confirm_password">
+            </div>
+                <div class="mb-3">
+                    <label for="Password" class="form-label labels_of_controls">Email</label>
+                    <input type="email" class="form-control midium_txt" id="txtEmail" placeholder="Email is required" @bind-value="email">
+                </div>
+                <div class="mb-3">
+                    <label for="FirstName" class="form-label labels_of_controls">First Name (optional)</label>
+                    <input type="text" class="form-control midium_txt" id="txtFName" placeholder="" @bind-value="email">
+                </div>
+                <div class="mb-3">
+                    <label for="FirstName" class="form-label labels_of_controls">Last Name (optional)</label>
+                    <input type="text" class="form-control midium_txt" id="txtFName" placeholder="" @bind-value="email">
+                </div>
+                <div class="form-group py-2">
+                    Category
+                    <InputSelect class="form-select" @bind-Value="@Product.Category">
+                        @foreach (var cat in Enum.GetValues(typeof(Category)))
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    </InputSelect>
+                </div>
+                <button type="submit" class="btn btn-primary" disabled="@IsProcesing">Register</button>
+        </fieldset>
+        </div>
+    </section>
+</EditForm>
+
+@code {
+    private string user_name = string.Empty;
+    private string password = string.Empty;
+    private string confirm_password = string.Empty;
+    private string email = string.Empty;
+    private bool IsProcesing = false;
+    private RegistrationViewModel registrator = new();
+    private string ErrMessage { get; set; } = string.Empty;
+
+    private async Task HandleSubmit()
+    {
+        if (confirm_password != password)
+        {
+            ErrMessage = "The entered passwords do not match!";
+        }
+        else
+        {
+            ErrMessage = string.Empty;
+            IsProcesing = true;
+            registrator = new()
+            {
+                UserName = user_name,
+                Email = email,
+                Password = password
+
+            };
+            StrResponse sr = await registrator.SaveRegistration();
+            NavigationManager.NavigateTo("/", forceLoad: true);
+            IsProcesing = false;
+        }
+
+    }
 }

@@ -1,11 +1,10 @@
-﻿using System;
+﻿using SMAuthentication.Main;
+using SMAuthentication.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using Authentication.Main;
-using Authentication.Models;
 namespace MRWBlogs.Models.LogIn
 {
-    public class LogInModel
+    public class LogInViewModel
     {
         [Required]
         public string UserName { get; set; } = string.Empty;
@@ -17,7 +16,7 @@ namespace MRWBlogs.Models.LogIn
         public string UserToken { get; set; } = string.Empty;
         public int UserLevel { get; set; } = 0;
         public int UserId { get; set; } = 0;
-        public LogInModel()
+        public LogInViewModel()
         {
 
         }
@@ -26,7 +25,7 @@ namespace MRWBlogs.Models.LogIn
             bool brez = false;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {
-                Authenticator auth = new Authenticator(UserName,Password,Constants.AppId);
+                Authenticator auth = new (UserName,Password,Constants.AppId);
                 StrResponse response=  auth.Authenticate();
                 ErrCode= response.ErrCode;
                 if (response.ErrCode == SMAuthentication.Constants.ErrorsCodes.NoError)
@@ -49,8 +48,8 @@ namespace MRWBlogs.Models.LogIn
         }
         public string UpdateToken()
         {
-            string new_token = string.Empty;
-            MUser user = new MUser(UserId, Constants.AppId);
+            string new_token;
+            MUser user = new (UserId, Constants.AppId);
             new_token = Guid.NewGuid().ToString();
             user.SetUserToken(new_token);
             

@@ -5,7 +5,7 @@ namespace MRWBlogs.Models
 {
     public class BlogMessagesRepository:BaseModel
     {
-        public List<BlogMessage> BlogMessages { get; set; }=new List<BlogMessage>(); 
+        public List<BlogMessage> BlogMessages { get; set; }=[]; 
         public BlogMessagesRepository() { }
         public BlogMessagesRepository(int blogId)
         {
@@ -13,12 +13,10 @@ namespace MRWBlogs.Models
         }
         protected void GetRepository(int blogId)
         {
-            using (MRWBlogsContext context = new MRWBlogsContext(GetContextOptions()))
-            {
-                var bm = context.BlogsMessages.Where(x=>x.BlogId == blogId).ToList();
-                if (bm != null)
-                    BlogMessages = bm;
-            }
+            using MRWBlogsContext context = new(GetContextOptions());
+            var bm = context.BlogsMessages.Where(x => x.BlogId == blogId).ToList();
+            if (bm != null)
+                BlogMessages = bm;
         }
     }
 }

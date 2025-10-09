@@ -42,7 +42,7 @@
     private string token = "";
     private string welcome_class = "welcome_item";
     [Inject]
-    public ICookie cookie { get; set; }
+    public ICookie? cookie { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (cookie is not null && firstRender)

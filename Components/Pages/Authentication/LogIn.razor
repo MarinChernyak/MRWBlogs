@@ -2,8 +2,6 @@
 @using MRWBlogs.Models.LogIn
 @using System.Text.Json
 @using MRWBlogs.Utilities
-@* @using Microsoft.AspNetCore.Http
-@inject PersistentComponentState ApplicationState *@
 @inject NavigationManager NavigationManager
 @layout GeneralLayout
 @rendermode InteractiveServer
@@ -57,22 +55,19 @@
     private string user_name = string.Empty;
     private string password = string.Empty;
     private bool remember_me = false;
-    private LogInModel authenticator = new();
+    private LogInViewModel authenticator = new();
     private bool IsProcesing = false;
-    private PersistingComponentStateSubscription persistingSubscription;
-    // [Inject]
-    // public IHttpContextAccessor HttpContextAccessor { get; set; }
+   
     [Inject]
-    public ICookie cookie { get; set; }
-
+    public ICookie? cookie { get; set; }
     private string token=string.Empty;
-    private int ulevel = 0;
+    
 
     private async Task HandleSubmit()
     {
         IsProcesing = true;
 
-        authenticator = new LogInModel
+        authenticator = new LogInViewModel
         {
             UserName = user_name,
             Password = password,
@@ -97,11 +92,8 @@
             NavigationManager.NavigateTo("/", forceLoad: true);
         }
 
-
-            // ApplicationState.PersistAsJson(SMAuthentication.Constants.Values.UserToken, token);
-            // ApplicationState.PersistAsJson(SMAuthentication.Constants.Values.UserLevel, authenticator.UserLevel.ToString());
             IsProcesing = false;            
             
         }        
     }
-}
+
