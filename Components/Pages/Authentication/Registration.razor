@@ -1,18 +1,18 @@
 ﻿@page "/registration"
+@layout GeneralLayout
 @using MRWBlogs.Models.LogIn
 @using MRWBlogs.Utilities
 @using SMAuthentication.Models
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
-
-<h3>Registration</h3>
 
 
 <EditForm FormName="frmProduct" Model="registrator" OnSubmit="HandleSubmit">
    
     <DataAnnotationsValidator />
     <ValidationSummary class="text-danger" />
-    <section id="LogIn">        
+    <section id="MainReg">        
         <div class="container">
         <div class="HolderMsg">
             <div class="ErrMsg"> @ErrMessage </div>
@@ -22,7 +22,7 @@
             }
         </div>
         <fieldset>
-            <legend>Log in Form</legend>
+            <legend>Registration Form</legend>
             <div class="mb-3">
                 <label class="form-label labels_of_controls">User Name</label>
                 <input type="text" class="form-control midium_txt" id="txtUserName" placeholder="UserName is required" @bind-value="user_name">
@@ -36,27 +36,30 @@
                 <input type="password" class="form-control midium_txt" id="txtPass2" placeholder="Confirm the password" @bind-value="confirm_password">
             </div>
                 <div class="mb-3">
-                    <label for="Password" class="form-label labels_of_controls">Email</label>
+                    <label for="Email" class="form-label labels_of_controls">Email</label>
                     <input type="email" class="form-control midium_txt" id="txtEmail" placeholder="Email is required" @bind-value="email">
                 </div>
                 <div class="mb-3">
                     <label for="FirstName" class="form-label labels_of_controls">First Name (optional)</label>
-                    <input type="text" class="form-control midium_txt" id="txtFName" placeholder="" @bind-value="email">
+                    <input type="text" class="form-control midium_txt" id="txtFName" placeholder="" @bind-value="@FirstName">
                 </div>
                 <div class="mb-3">
-                    <label for="FirstName" class="form-label labels_of_controls">Last Name (optional)</label>
-                    <input type="text" class="form-control midium_txt" id="txtFName" placeholder="" @bind-value="email">
+                    <label for="LastName" class="form-label labels_of_controls">Last Name (optional)</label>
+                    <input type="text" class="form-control midium_txt" id="txtLName" placeholder="" @bind-value="@LastName">
                 </div>
-                <div class="form-group py-2">
-                    Category
-                    <InputSelect class="form-select" @bind-Value="@Product.Category">
-                        @foreach (var cat in Enum.GetValues(typeof(Category)))
+                <div class="form-group py-2 mb-4">
+                    <label for="Country" class="form-label labels_of_controls">Country (optional)</label>
+                    <InputSelect class="form-select midium_txt" @bind-Value="@CountryId">
+                        @foreach (var cat in registrator.Countries)
                         {
-                            <option value="@cat">@cat</option>
+                            <option value="@cat.Id">@cat.CountryName</option>
                         }
                     </InputSelect>
                 </div>
-                <button type="submit" class="btn btn-primary" disabled="@IsProcesing">Register</button>
+      
+                <div class="col-md-3 form-group align-center mt-3">
+                    <button type="submit" class="btn btn-outline-warning btn-txt" disabled="@IsProcesing">Register</button>
+                </div>
         </fieldset>
         </div>
     </section>
@@ -70,6 +73,9 @@
     private bool IsProcesing = false;
     private RegistrationViewModel registrator = new();
     private string ErrMessage { get; set; } = string.Empty;
+    private short CountryId{ get; set; }
+    private string FirstName { get; set; } = string.Empty;
+    private string LastName { get; set; } = string.Empty;
 
     private async Task HandleSubmit()
     {
@@ -85,12 +91,25 @@
             {
                 UserName = user_name,
                 Email = email,
-                Password = password
+                Password = password,
+                CountryId = CountryId,
+                FirstName = FirstName,
+                LastName = LastName
 
             };
             StrResponse sr = await registrator.SaveRegistration();
-            NavigationManager.NavigateTo("/", forceLoad: true);
-            IsProcesing = false;
+            if (sr.ErrCode > 0)
+            {
+                ErrMessage = sr.GetStringByErrCode();
+                IsProcesing = false;
+                StateHasChanged();
+
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/", forceLoad: true);
+                IsProcesing = false;
+            }
         }
 
     }

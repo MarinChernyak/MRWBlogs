@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -26,18 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
@@ -45,6 +33,12 @@
     <ProjectReference Include="..\Authentication\SMAuthentication.csproj" />
     <ProjectReference Include="..\MRWBlobs_DAL\MRWBlogs_DAL.csproj" />
     <ProjectReference Include="..\SMCommonUtilities\SMCommonUtilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SMGeo">
+      <HintPath>..\SMGeo\obj\Release\net9.0\SMGeo.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

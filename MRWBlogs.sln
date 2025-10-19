@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36119.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRWBlogs", "MRWBlogs.csproj", "{6BE4E18D-5EB9-48F0-A84C-47427ED4FE99}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5934AECE-8FC9-0B00-D75F-BF431661A546} = {5934AECE-8FC9-0B00-D75F-BF431661A546}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRWBlogs_DAL", "..\MRWBlobs_DAL\MRWBlogs_DAL.csproj", "{B6BB4B23-28B6-4AFD-A968-EF21AB089E6D}"
 EndProject
@@ -11,10 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMCommonUtilities", "..\SMC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMAuthentication", "..\Authentication\SMAuthentication.csproj", "{EF5114EB-B753-AD60-DF89-A2BEEC227848}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMGeo", "..\SMGeo\SMGeo.csproj", "{196494D0-14E9-4F13-A846-1B3CAD5A819E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F95C892C-7230-5F8B-4B53-F68D9F607999} = {F95C892C-7230-5F8B-4B53-F68D9F607999}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMGeo", "..\SMGeo\SMGeo.csproj", "{5934AECE-8FC9-0B00-D75F-BF431661A546}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +38,10 @@ Global
 		{EF5114EB-B753-AD60-DF89-A2BEEC227848}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF5114EB-B753-AD60-DF89-A2BEEC227848}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF5114EB-B753-AD60-DF89-A2BEEC227848}.Release|Any CPU.Build.0 = Release|Any CPU
-		{196494D0-14E9-4F13-A846-1B3CAD5A819E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{196494D0-14E9-4F13-A846-1B3CAD5A819E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{196494D0-14E9-4F13-A846-1B3CAD5A819E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{196494D0-14E9-4F13-A846-1B3CAD5A819E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5934AECE-8FC9-0B00-D75F-BF431661A546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5934AECE-8FC9-0B00-D75F-BF431661A546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5934AECE-8FC9-0B00-D75F-BF431661A546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5934AECE-8FC9-0B00-D75F-BF431661A546}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
