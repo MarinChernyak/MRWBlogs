@@ -15,7 +15,9 @@ namespace MRWBlogs.Models.LogIn
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public short CountryId { get; set; } = 0;
-        public List<Country> Countries { get; set; } = new List<Country>();
+        public List<Country> Countries { get; set; } = [];
+        public bool IsActive { get; set; } = false;
+
         //public List<Country>
         public RegistrationViewModel()
         {
@@ -23,10 +25,10 @@ namespace MRWBlogs.Models.LogIn
         }
         protected void InitCollections()
         {
-            using (var context = new SMGeoContext())
-            {
-                Countries = context.Countries.OrderBy(c => c.CountryName).ToList();
-            }
+            using var context = new SMGeoContext();
+            
+             Countries = [.. context.Countries.OrderBy(c => c.CountryName)];
+            
         }
         public async Task<StrResponse> SaveRegistration()
         {
@@ -38,7 +40,8 @@ namespace MRWBlogs.Models.LogIn
                 UserName = UserName,
                 FirstName = FirstName,
                 LastName = LastName,
-                CountryId = CountryId
+                CountryId = CountryId,
+                IsActive = IsActive
             };
             StrResponse sr = await model.SaveNewUserOrUpdateAsMemeberProject();
             return sr;

@@ -1,0 +1,110 @@
+﻿@page "/myaccount"
+@layout GeneralLayout
+@using MRWBlogs.Models
+@using MRWBlogs.Models.LogIn
+@using MRWBlogs.Utilities
+@using SMAuthentication.Factories
+@using SMAuthentication.Models
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+
+
+<EditForm FormName="frmProduct" Model="myAccount" OnSubmit="HandleSubmit">
+   
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+    <section id="MainReg">
+        <div class="container">
+            <div class="HolderMsg">
+                <div class="ErrMsg"> @ErrMessage </div>
+                @if (IsProcesing)
+                {
+                    <div class="InfoMsg">Processing... </div>
+                }
+            </div>
+            <fieldset>
+                <legend><span class="user_label"> @myAccount.UserName</span> - details of the account</legend>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls">User Name</label>
+                    <input type="text" class="form-control midium_txt" id="txtUserName" disabled="disabled" @bind-value="@myAccount.UserName">
+                </div>
+                <div class="mb-3">
+                    <label for="Password" class="form-label labels_of_controls">Password</label>
+                    <input type="text" class="form-control midium_txt" id="txtPass1" placeholder="Password is required" @bind-value="myAccount.Password">
+                </div>
+                <div class="mb-3">
+                    <label for="Email" class="form-label labels_of_controls">Email</label>
+                    <input type="email" class="form-control midium_txt" id="txtEmail" placeholder="Email is required" @bind-value="myAccount.Email">
+                </div>
+                <div class="mb-3">
+                    <label for="FirstName" class="form-label labels_of_controls">First Name (optional)</label>
+                    <input type="text" class="form-control midium_txt" id="txtFName" placeholder="" @bind-value="@myAccount.FirstName">
+                </div>
+                <div class="mb-3">
+                    <label for="LastName" class="form-label labels_of_controls">Last Name (optional)</label>
+                    <input type="text" class="form-control midium_txt" id="txtLName" placeholder="" @bind-value="@myAccount.LastName">
+                </div>
+                <div class="form-group py-2 mb-4">
+                    <label for="Country" class="form-label labels_of_controls">Country (optional)</label>
+                    <InputSelect class="form-select midium_txt" @bind-Value="@myAccount.CountryId">
+                        @foreach (var cat in myAccount.Countries)
+                        {
+                            <option value="@cat.Id">@cat.CountryName</option>
+                        }
+                    </InputSelect>
+                </div>
+
+                <div class="col-md-3 form-group align-center mt-3">
+                    <button type="submit" class="btn btn-outline-warning btn-txt" disabled="@IsProcesing">Save Changes</button>
+                    <button type="button" class="btn btn-outline-light btn-txt" disabled="@IsProcesing">Cancel</button>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+
+</EditForm>
+
+@code {
+    [Inject]
+    public ICookie? cookie { get; set; }
+
+    private string userName { get; set; } = string.Empty;
+    private string ErrMessage { get; set; } = string.Empty;
+    private bool IsProcesing { get; set; } = false;
+    private string token { get; set; } = string.Empty;
+    private void UpdateUser()
+    {
+
+    }
+    private MyAccountViewModel myAccount = new();
+    private void HandleSubmit()
+    {
+        ErrMessage = string.Empty;
+        IsProcesing = true;
+
+        bool brez= myAccount.SaveUserData(token);
+        if (!brez)
+        {
+            ErrMessage = "Unknown Error! Data wasn't saved!";
+            IsProcesing = false;
+            StateHasChanged();
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/", forceLoad: true);
+        }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (cookie is not null && firstRender)
+        {
+            token=await cookie.GetValue(SMAuthentication.Constants.Values.UserToken, token);           
+            myAccount = new MyAccountViewModel();
+            myAccount.InitModel(token);
+            StateHasChanged(); 
+        }
+
+    }
+}

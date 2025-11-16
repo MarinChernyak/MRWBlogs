@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using MRWBlobs_DAL.Entities;
 using MRWBlogs.Components;
 using MRWBlogs.Utilities;
-using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
