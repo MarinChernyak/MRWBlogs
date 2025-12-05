@@ -58,7 +58,7 @@
 
                 <div class="col-md-3 form-group align-center mt-3">
                     <button type="submit" class="btn btn-outline-warning btn-txt" disabled="@IsProcesing">Save Changes</button>
-                    <button type="button" class="btn btn-outline-light btn-txt" disabled="@IsProcesing">Cancel</button>
+                    <button type="button" class="btn btn-outline-light btn-txt" @onclick="@GoBack" disabled="@IsProcesing">Cancel</button>
                 </div>
             </fieldset>
         </div>
@@ -106,5 +106,9 @@
             StateHasChanged(); 
         }
 
+    }
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/", forceLoad: true);
     }
 }

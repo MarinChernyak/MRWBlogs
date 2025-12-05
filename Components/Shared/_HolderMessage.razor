@@ -1,0 +1,29 @@
+﻿@using MRWBlogs.Models.Shared;
+@using static MRWBlogs.Models.Shared.HolderMessageVM
+
+@if (!String.IsNullOrEmpty(_model.MessageContainer.Message))
+{
+    <div class="HolderMsg">
+        <div class="@_model.getClassMsg() InlineBlock">
+            <div class= "InlineBlock"> @_model.getMessage()</div>
+            <div class="InlineBlock ms-lg-4"><img src="/Images/buttons/close.png" alt="close" title="close message" @onclick="CloseMessage"></div>
+        </div>
+        @if (_model.IsProcesing)
+        {
+            <div class="InfoMsg">Processing... </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public HolderMessageVM _model { get; set; } = new();
+
+    private void CloseMessage()
+    {
+        _model.SetMessage(string.Empty, MessageType.None);
+        StateHasChanged();
+    }
+
+    
+}

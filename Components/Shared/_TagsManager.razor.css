@@ -1,0 +1,26 @@
+﻿h3 {
+    font-family: 'Segoe UI';
+    color: #cbcbcb;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+.div_ctrl_btn {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding:0;
+}
+.div_ctrl {
+    display: flex;
+    flex:0 1 auto;  
+
+}
+.div_btn {
+    display: flex;
+    flex: 0 1 auto;
+    margin-left: 10px;
+}

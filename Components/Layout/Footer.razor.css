@@ -1,0 +1,22 @@
+﻿a {
+    text-decoration: none;
+}
+.menu_item {
+    display: inline-block;
+    position: relative;
+}
+.menu_labels {
+    font-family: 'Segoe Print';
+    color: lightgoldenrodyellow;
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+.menu_labels_grey, .menu_labels_grey a, .menu_labels_grey a:visited {
+    font-family: 'Segoe Print';
+    color: #808080;
+    font-size: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    text-decoration: none;
+}

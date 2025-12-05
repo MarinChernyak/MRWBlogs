@@ -12,7 +12,7 @@ a{
 .menu_labels {
     font-family: 'Segoe Print';
     color: lightgoldenrodyellow;
-    font-size: 25px;
+    font-size: 20px;
     margin-right: 20px;
 }
 
@@ -26,16 +26,15 @@ a{
 }
 
 .welcome_item {
-    width: 70% !important;
+    width: 80% !important;
     display: inline-block;
     position: relative;
-
 }
 .welcome_item::first-line {
 margin-left:10%;
 }
 .welcome_item_user {
-    width: 50% !important;
+    width: 62% !important;
     display: inline-block;
     position: relative;
 
@@ -59,6 +58,7 @@ margin-left:10%;
     cursor:pointer;
 }
 .search_item {
+
     border-radius: 7px;
     display: inline;
 }

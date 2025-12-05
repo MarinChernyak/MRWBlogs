@@ -13,7 +13,9 @@ var conString = builder.Configuration.GetConnectionString("MRWBlogsConnection") 
      throw new InvalidOperationException("Connection string 'MRWBlogsConnection'" +
     " not found.");
 builder.Services.AddDbContext<MRWBlogsContext>(options =>
-    options.UseSqlServer(conString));
+    options.UseSqlServer(conString,
+      x => x.MigrationsAssembly(typeof(MRWBlogsContext).Assembly.FullName)));
+
 builder.Services.AddScoped<ICookie, Cookie>();
 builder.Services.AddHttpContextAccessor();
 
