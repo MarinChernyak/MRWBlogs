@@ -6,5 +6,6 @@
         public static string SelctOptionValue =>"-1";
         public static string SelctOptionTxt => "Select...";
         public static int AccessLevelTrustedUser => 50;
+        public static string AvatarsFolder => "Images/Avatars";
     }
 }

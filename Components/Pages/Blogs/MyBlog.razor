@@ -1,0 +1,24 @@
+﻿@using MRWBlogs.Models.Shared
+
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+      <section id="MainReg">
+        <div class="container">
+           
+
+            <_HolderMessage _model="@holderMessageVM"  />
+          </div>
+          <div class="container">
+              <fieldset>
+                <legend>List of my blog's artiles</legend>
+                <div class="mb-3">
+
+               </div>
+            </fieldset>
+        </div>
+    </section>
+
+@code {
+    HolderMessageVM holderMessageVM = new HolderMessageVM();
+
+}

@@ -2,96 +2,72 @@
 @using MRWBlogs.Models
 @using MRWBlogs.Utilities
 
-<fieldset>
-        <h3>Please select some tags for your blog</h3>
-        <div class="mb-3">
-            <label class="form-label labels_of_controls">Existing tags</label>
-        <div class="div_ctrl_btn">
-            <div class="div_ctrl">
-                <select class="form-control midium_txt dispInline" id="cmbExitingTags" @bind="@selectedTag">
-                        <option value="@Constants.SelctOptionValue" selected>@Constants.SelctOptionTxt</option> 
-                        @foreach (var tag in model.ExistingTags)
-                        {
-                        <option value="@tag.Key" selected="@tag.Key==@newtag?'selected':''">@tag.Value</option>
-                        }
-                    </select>
-                </div>
-                <div class="div_btn">
-                <img title="select..." src="/Images/buttons/select.png" @onclick="SelectTag"/>
-                </div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label labels_of_controls">Selected tags</label>
-        <div class="div_ctrl_btn">
-            <div class="div_ctrl">
-                <select class="form-control midium_txt dispInline" id="cmbExitingTags">
-                    <option value="@Constants.SelctOptionValue" selected="selected">@Constants.SelctOptionTxt</option>
-                    @foreach (var tag in model.SelectedTags)
-                    {
-
-                        <option value="@tag.Key" selected="@tag.Key==@newtag?'selected:''">@tag.Value </option>
-                    }
-                </select>
-            </div>
-            <div class="div_btn">
-                <img title="select..." src="/Images/buttons/select.png" @onclick="RemoveSelTag">
-            </div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label labels_of_controls">Selected tags</label>
+<div>
+  <h3>Please select some tags for your blog</h3>
+    <div class="mb-3">
+        <label class="form-label labels_of_controls">Create a new tag</label>
         <div class="div_ctrl_btn">
             <div class="div_ctrl">
                 <input type="text" class="form-control midium_txt" id="txtTag" placeholder="Type some tag..." @bind-value="newtag">
             </div>
             <div class="div_btn">
-                <img title="send" src="/Images/buttons/select.png" @onclick="AddTag">
+                <img title="Add tag" src="/Images/buttons/select.png" @onclick="AddTag">
             </div>
         </div>
     </div>
-</fieldset>
+    <div class="mb-3">
+        <label class="form-label labels_of_controls">Selected tags</label>
+        <div class="div_ctrl_btn">
+        <div class="div_ctrl">
+            <select class="form-control midium_txt dispInline" id="cmbExitingTags" @bind="@remSelectedTag">
+                <option value="@Constants.SelctOptionValue" >@Constants.SelctOptionTxt</option>
+                @foreach (var tag in model.SelectedTags)
+                {
+
+                    <option value="@tag">@tag </option>
+                }
+            </select>
+        </div>
+        <div class="div_btn">
+            <img title="remove selected tag..." src="/Images/buttons/select.png" @onclick="RemoveSelTag">
+        </div>
+        </div>
+    </div>
+        
+</div>
 
 
 
 @code {
     [Inject]
     public ICookie? cookie { get; set; }
-    TagsManagerVM model = new TagsManagerVM();
+    [Parameter]
+    public TagsManagerVM model { get; set; } = new();
     private string newtag { get; set; } = string.Empty;
-    private string selectedTag { get; set; } = string.Empty;
-    private void SelectTag()
-    {
-        int tagId = 0;
-        if (int.TryParse(selectedTag, out tagId))
-        { if (model.ExistingTags.ContainsKey(tagId) && !model.SelectedTags.ContainsKey(tagId))
-            {
-                model.SelectedTags.Add(tagId, model.ExistingTags[tagId]);
-            }
-        }
+    private string remSelectedTag { get; set; } = Constants.SelctOptionValue;
 
-    }
     private void RemoveSelTag()
     {
+        if (model.SelectedTags.Contains(newtag))
+        {
+            model.SelectedTags.Remove(newtag);
+            StateHasChanged();
+        }
 
     }
-    private async Task AddTag()
+    private void AddTag()
     {
-        Random rnd = new Random();
-        int key=rnd.Next(1000000, 1000000000)*-1;
-
-        if (cookie != null)
+        if(string.IsNullOrWhiteSpace(newtag))
         {
-            string token = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken);
-            int acessLevel = await model.getUseracessLevel(token);
-            if(acessLevel >= Constants.AccessLevelTrustedUser)
-            {
-                //no permission to create new tag
-                model.ExistingTags.Add(key, newtag);
-            }            
+            return;
         }
-        model.SelectedTags.Add(key, newtag);
-        newtag = string.Empty;
+        if (!model.SelectedTags.Contains(newtag))
+        {
+            model.SelectedTags.Add(newtag);
+            remSelectedTag = newtag;
+            newtag = string.Empty;
+        }
+
         StateHasChanged();
     }
 }

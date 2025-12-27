@@ -22,7 +22,13 @@ namespace MRWBlogs.Models.Shared
             MsgType = MessageType.None;
             Message =  string.Empty;
         }
+        public void ClearMessage()
+        {
+            MsgType = MessageType.None;
+            Message = string.Empty;
+        }
     }
+    
     public class HolderMessageVM
     {
         public enum MessageType
@@ -48,6 +54,13 @@ namespace MRWBlogs.Models.Shared
                 msg = MessageContainer.Message;
             }
             return msg;
+        }
+        public void ClearMessage()
+        {
+            if (MessageContainer != null)
+            {
+                MessageContainer.ClearMessage();
+            }
         }
         public string getClassMsg ()
         {

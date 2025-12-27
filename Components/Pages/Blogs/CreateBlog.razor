@@ -6,8 +6,11 @@
 @rendermode InteractiveServer
 @using MRWBlogs.Utilities
 @using Microsoft.AspNetCore.Hosting
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using Microsoft.Extensions.Hosting
+@using static MRWBlogs.Models.Shared.HolderMessageVM
 @inject IWebHostEnvironment WebHostEn
+@inject NavigationManager NavigationManager
 
 
 <EditForm FormName="frmCreateBlog" Model="modelCreateBlog" OnSubmit="HandleSubmit">
@@ -30,11 +33,10 @@
                     <label class="form-label labels_of_controls" accesskey=" ">Select a picture for avatar</label>
                     <InputFile OnChange="OnInputFileChange" class="form-control midium_txt" />
                 </div>
-
-                <div class="col-md-3 form-group align-center mt-3">
-                    <button class="btn btn-outline-light btn-txt" @onclick="UploadFiles">Upload avatar</button>
+                <_TagsManager model="@tagsModel" />
+                <div class="col-md-3 mt-3">
+                    <button class="btn btn-outline-light btn-txt">Submit</button>
                 </div>
-                <_TagsManager />
             </fieldset>
            
           </div>
@@ -43,7 +45,10 @@
 @code {
     [Inject]
     public ICookie? cookie { get; set; }
+    [Inject]
+    public IWebHostEnvironment? environment { get; set; }
     CreateBlogVM modelCreateBlog = new CreateBlogVM();
+    private TagsManagerVM tagsModel = new TagsManagerVM();
     HolderMessageVM holderMessageVM = new HolderMessageVM();
     private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
     private void OnInputFileChange(InputFileChangeEventArgs e)
@@ -52,30 +57,27 @@
     }
     private async Task HandleSubmit()
     {
-        // holderMessageVM.ClearMessages();
-        // bool result = await modelCreateBlog.CreateBlogAsync();
-        // if (result)
-        // {
-        //     holderMessageVM.InfoMessage = "Blog created successfully.";
-        // }
-        // else
-        // {
-        //     holderMessageVM.ErrMessage = modelCreateBlog.ErrorMessage;
-        // }
-    }
-    private async Task UploadFiles()
-    {
-        modelCreateBlog.Environment = WebHostEn;
+        holderMessageVM.ClearMessage();
+        string token = string.Empty;
         if(cookie != null)
         {
 
             holderMessageVM.IsProcesing = true;
-            string token = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken);
-            MessageContainer msg = await modelCreateBlog.UploadAsync(selectedFiles[0], token);
-            holderMessageVM.SetMessage (msg.Message,msg.MsgType );
-            holderMessageVM.IsProcesing = false;
+            token = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken);
+        }
+       
+        MessageContainer msg = await modelCreateBlog.CreateBlogAsync(environment, selectedFiles[0], token, tagsModel.GetTagsAsString());
+        if (msg.MsgType != MessageType.Success)
+        {
+            holderMessageVM.SetMessage(msg.Message,msg.MsgType);
             StateHasChanged();
         }
+        else
+        {
+            NavigationManager.NavigateTo("/", forceLoad: true); 
+        }
+
+
     }
 }
 

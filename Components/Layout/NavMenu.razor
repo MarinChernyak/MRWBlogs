@@ -1,4 +1,6 @@
-﻿@using MRWBlogs.Utilities
+﻿@using MRWBlogs.Models
+@using MRWBlogs.Models.Blogs
+@using MRWBlogs.Utilities
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <header>
@@ -18,7 +20,15 @@
             else
             {
                 <span class="menu-item_medium">
-                 <a class="text-dark" href="createblog"><span class="menu_labels">Create blog</span></a>
+                @if(!IsBlogExisting)
+                {
+                   <a class="text-dark" href="createblog"><span class="menu_labels">Create blog</span></a>
+                }
+                else
+                {
+                   <a class="text-dark" href="myblog"><span class="menu_labels">My Blog</span></a>
+                }
+
                 <a class="text-dark" href="myaccount"><span class="menu_labels">My Account</span></a>
                <span class="menu_labels_grey link_item" @onclick="onLogOut">Logout</span>
                 </span>
@@ -34,6 +44,7 @@
 </header>
 
 @code {
+    private bool IsBlogExisting = false;
     private string token = "";
     private string welcome_class = "welcome_item";
     [Inject]
@@ -46,6 +57,7 @@
             if (!string.IsNullOrEmpty(token))
             {
                 welcome_class = "welcome_item_user";
+                IsBlogExisting = await CheckBlogExistence(token);
                 StateHasChanged();
             }
         }
@@ -60,5 +72,9 @@
             NavigationManager.NavigateTo("/", forceLoad: true);
         }
     }
-
+    private async Task<bool> CheckBlogExistence(string tiken)
+    {
+        BlogBaseModel blogBaseModel = new BlogBaseModel();
+        return await blogBaseModel.IsBlogExisting(token);
+    }
 }

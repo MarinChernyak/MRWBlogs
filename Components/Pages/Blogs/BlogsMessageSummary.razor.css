@@ -1,0 +1,59 @@
+﻿.BlogSummaryView {
+    background-color: lightgrey;
+    border: 1px solid navy;
+    border-radius: 10px;
+    color: navy;
+    font-family: Calibri;
+    font-size: 20px;
+    margin: 20px 0;
+    width: 100%;
+    padding: 0 1.5%;
+}
+
+/* Left area */
+.img_room {
+    padding: 10px;
+    width: 5%;
+    display: inline-block;
+    vertical-align: top;
+}
+.img_room img {
+    border: 1px solid #333;
+    aspect-ratio: auto;
+    width: 100%;
+    display: block;
+}
+/******LeftArea end**********/
+/*          Main Area     */
+.main_part_room {
+    width: 81%;
+    padding: 10px;
+    border: 1px solid darkgrey;
+    display: inline-block;
+}
+
+.descriptio_part {
+    height: 80%;
+    display: block;
+}
+
+.key_words_part {
+    height: 15%;
+    display: block;
+    background-color: dimgray;
+    color: antiquewhite;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    font-family: 'Segoe UI';
+}
+
+.key_words_keyword {
+    display: inline-flex;
+    color: moccasin;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.key_words_list {
+    display: inline-flex;
+}
