@@ -1,0 +1,14 @@
+﻿@using MRWBlogs.Models.Blogs
+
+<div class="container">
+    <h2>"List of latest blogs"</h2>
+    @foreach (var blog in Model.Blogs)
+    {
+          <BlogSummary Model = "@blog" />
+         
+    }
+</div>
+@code {
+    private BlogsList Model = new BlogsList();
+
+}

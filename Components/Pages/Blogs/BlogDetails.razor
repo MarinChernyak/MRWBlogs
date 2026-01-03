@@ -1,4 +1,6 @@
-﻿@using MRWBlogs.Models.Shared
+﻿@page "/blogdetails"
+@using MRWBlogs.Models.Shared
+@using MRWBlogs.Utilities
 
     <DataAnnotationsValidator />
     <ValidationSummary class="text-danger" />
@@ -19,6 +21,11 @@
     </section>
 
 @code {
+    [Inject]
+    public ICookie? cookie { get; set; }
+    [Parameter]
+    public BlogDetails? Model { get; set; }
     HolderMessageVM holderMessageVM = new HolderMessageVM();
+    private string token = string.Empty;
 
 }

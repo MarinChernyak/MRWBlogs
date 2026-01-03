@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MRWBlobs_DAL.Entities;
 using MRWBlogs.Models.Shared;
-using SMAuthentication.Factories;
-using SMAuthentication.Models;
 using SMCommonUtilities;
 using static MRWBlogs.Models.Shared.HolderMessageVM;
 
@@ -10,10 +8,7 @@ namespace MRWBlogs.Models.Blogs
 {
     public class CreateBlogVM: BlogBaseModel
     {
-        public int IdOwner { get; protected set; }
-        public string OwnerUserName { get; protected set; } = string.Empty;
-
-      
+     
         public CreateBlogVM()
         {
         }
@@ -26,7 +21,7 @@ namespace MRWBlogs.Models.Blogs
             try
             {
 
-                if (file != null)
+                if (file != null && env!=null )
                 {
                     // Set the maximum allowed file size (e.g., 50kB)
                     var maxFileSize = 50 * 1024;
@@ -71,11 +66,11 @@ namespace MRWBlogs.Models.Blogs
         }
         public async Task<MessageContainer> CreateBlogAsync(IWebHostEnvironment? env, IBrowserFile file, string token, string keywords)
         {
-            MessageContainer msg = new ();
-            if (! await UserHasBlog(token))
+            MessageContainer? msg = null;
+            if (! await IsBlogExisting(token)) //it is just to prevent double clicking
             {
                 msg = await UploadAsync(env, file);
-                if (msg != null && msg.MsgType != MessageType.Error && msg.MsgType != MessageType.Warning)
+                if (msg != null && msg.MsgType != MessageType.Error && msg.MsgType != MessageType.Warning && IdOwner > 0)
                 {
                     using MRWBlogsContext context = new(GetContextOptions());
                     Blog newBlog = new()
@@ -86,7 +81,8 @@ namespace MRWBlogs.Models.Blogs
                         Avatar = GetAvatarFileName(file),
                         UserId = IdOwner,
                         IsPublished = true,
-                        Keywords = keywords
+                        Keywords = keywords,
+                        VisibilityId = 1
                     };
                     context.Blogs.Add(newBlog);
                     try
@@ -129,23 +125,6 @@ namespace MRWBlogs.Models.Blogs
                 msg = new MessageContainer("User already has a blog. Cannot create another one.", MessageType.Warning);
             }
             return msg;
-        }
-        private async Task<bool> UserHasBlog(string token)
-        {
-            bool result = false;
-            MUser? user = await UsersFactoryHelpers.CheckToken(token, Constants.AppId);
-            if (user != null)
-            {
-                IdOwner = user.Id;
-                OwnerUserName = user.UserName;
-                using MRWBlogsContext context = new(GetContextOptions());
-                var blog = context.Blogs.FirstOrDefault(b => b.UserId == user.Id);
-                if (blog != null)
-                {
-                    result = true;
-                }
-            }
-            return result;
         }
     }
 }

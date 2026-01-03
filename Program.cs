@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MRWBlobs_DAL.Entities;
 using MRWBlogs.Components;
+using MRWBlogs.Services;
 using MRWBlogs.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<MRWBlogsContext>(options =>
       x => x.MigrationsAssembly(typeof(MRWBlogsContext).Assembly.FullName)));
 
 builder.Services.AddScoped<ICookie, Cookie>();
+builder.Services.AddScoped<DataTransferService>();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();

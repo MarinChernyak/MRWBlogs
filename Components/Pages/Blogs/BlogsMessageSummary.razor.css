@@ -57,3 +57,47 @@
 .key_words_list {
     display: inline-flex;
 }
+/* Buttons area */
+.buttons_area {
+    width: 3%;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+}
+
+.icon_menu {
+    margin-bottom: 20px;
+    margin-left: 10px;
+    display: block;
+    vertical-align: top;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    .icon_menu a {
+        color: navy;
+    }
+
+.first {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 1220px) {
+    .icon_menu, icon_menu a {
+        display: inline;
+        margin-right: 10px;
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+
+    .buttons_area {
+        display: block;
+        text-align: left;
+        margin-left: 16%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 60%;
+        min-height: 30px;
+        vertical-align: central;
+    }
+}

@@ -1,18 +1,72 @@
 ﻿@using MRWBlogs.Models.Blogs
-
+@using MRWBlogs.Utilities
+@inject NavigationManager NavigationManager
 
 <div class="BlogSummaryView">
     <figure class="img_room">
-        <img src="~/Images/buttons/gen_image.jpg" />
-        <img src="~/Images/buttons/gen_image.jpg" />
-        <img src="~/Images/buttons/gen_image.jpg" />
+        @if (Model != null)
+        {
+            @foreach (var pic in Model.BlogImages)
+            {
+                <img src="~/Images/buttons/gen_image.jpg" />
+            }
+        }
     </figure>
     <div class="main_part_room">
+        <div class="descriptio_part">
+            @if(Model!=null)
+            {
+                <h3>
+                    @Model.MessageTitle
+                </h3>
+                <p>
+                    @Model.MessageBody
+                </p>
+            }
+        </div>
+        <div class="key_words_part">
+            <div class="key_words_keyword">KeyWords:</div>
+            @if (Model != null)
+            {
+                <div class="key_words_list">@Model.MessageKeyWords</div>
+            }
+        </div>
+    
+    <div class="buttons_area">
+        @* see details*@
 
+            <span class="icon_menu first" title="take a look...">
+                <img @onclick="Details" src="~/Images/buttons/details32.png" />
+            </span>
+            
+            @* delete*@
+            <span class="icon_menu first" title="see code...">
+@*                 <a href="@Model.getCodeUrl()" target="_blank">
+                    @if (Model.IsOnline)
+                    {
+                        <i class="fa-solid fa-code"></i>
+                    }
+                    else
+                    {
+                        <span class="offline_labels">Code</span>
+                    }
+                </a> *@
+            </span>
+        </div>
     </div>
 </div>
-
-
 @code {
-    BlogsMessageSummaryModel model = new BlogsMessageSummaryModel();
+    [Parameter]
+    public BlogsMessageSummaryModel? Model { get; set; }
+    [Inject]
+    public ICookie? cookie { get; set; }
+
+    private void Details()
+    {
+        if (Model is not null)
+        {
+            NavigationManager.NavigateTo($"/blogmessage/{Model.Id}");
+        }
+    }
+
 }

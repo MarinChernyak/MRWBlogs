@@ -13,6 +13,7 @@ namespace MRWBlogs.Models.Blogs
 
         public DateTime CreatedAt { get; protected set; } = DateTime.Now;
         public DateTime LastUpdatedAt { get; protected set; } = DateTime.Now;
+        public int IdOwner { get; protected set; }
 
         public async Task<bool> IsBlogExisting(string token)
         {
@@ -26,8 +27,12 @@ namespace MRWBlogs.Models.Blogs
                 {
                     result = true;
                 }
+                else
+                {
+                    IdOwner = user.Id;
+                }
             }
-            return result;
+                return result;
         }
     }
 }
