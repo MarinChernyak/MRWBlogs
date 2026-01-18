@@ -1,0 +1,100 @@
+﻿@page "/addnewarticle/{BlogId:int}"
+
+@using MRWBlogs.Models.Blogs
+@using MRWBlogs.Models.Shared
+@using MRWBlogs.Utilities
+@using static MRWBlogs.Models.Shared.HolderMessageVM
+@inject NavigationManager NavigationManager
+@using MRWBlogs.Components.Shared
+@rendermode InteractiveServer
+
+<div class="container">
+     <_HolderMessage _model="@Model.HolderMessageVM" />
+</div>
+
+<EditForm FormName="frmCreateBlogMessage" OnSubmit="HandleSubmit" Model="Model">
+        <section id="MainReg">
+
+        <div class="container">
+            <fieldset>
+                <legend>Create a New Blog's Article</legend>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls" accesskey=" ">Title</label>
+
+                    <input type="text" class="form-control wide_txt" id="txtBlogTitle" placeholder="No Title" @bind-value="Model.Title">
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls" accesskey=" ">Content</label>
+                    <textarea id="txtDescription" name="w3review" rows="20" cols="50" class="form-control wide_txt" @bind="Model.Content">
+                        
+                    </textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls" accesskey=" ">Add a picture</label>
+                    <InputFile OnChange="OnInputFileChange" class="form-control wide_txt" accept=".jpg, .png" />
+                </div>
+                <_TagsManager model="@TagsManagerVM" />
+                <div class="col-md-3 mt-3">
+                    <button class="btn btn-outline-light btn-txt" type="submit">Submit</button>
+                </div>
+            </fieldset>
+
+        </div>
+    </section>
+</EditForm>
+@code {
+
+    [Parameter]
+    public int BlogId { get; set; }
+
+    private TagsManagerVM TagsManagerVM  = new TagsManagerVM();
+    [Inject]
+    public ICookie? cookie { get; set; }
+    [Inject]
+    public IWebHostEnvironment? environment { get; set; }
+
+    private ArticleCreateVM? Model;
+
+    protected override void OnParametersSet()
+    {
+        Model = new ArticleCreateVM(BlogId);
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Model != null)
+        {
+            Model.HolderMessageVM.ClearMessage();
+            string token = string.Empty;
+            Model.HolderMessageVM.IsProcesing = true;
+            if (cookie != null)
+            {
+
+                token = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken, token);
+            }
+            if (Model != null)
+            {
+                MessageContainer msg = await Model.DoMessageActionAsync(environment, Model.SelectedFiles[0], token, TagsManagerVM.GetTagsAsString());
+                if (msg.MsgType != MessageType.Success)
+                {
+                    Model.HolderMessageVM.SetMessage(msg.Message, msg.MsgType);
+                    Model.HolderMessageVM.IsProcesing = false;
+                    StateHasChanged();
+                }
+                else
+                {
+                    NavigationManager.NavigateTo("/", forceLoad: true);
+                }
+            }
+        }
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        if (Model != null)
+        {
+            Model.SelectedFiles = e.GetMultipleFiles().ToList();
+        }
+    }
+}

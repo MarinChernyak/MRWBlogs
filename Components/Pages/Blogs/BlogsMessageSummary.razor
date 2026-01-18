@@ -6,9 +6,13 @@
     <figure class="img_room">
         @if (Model != null)
         {
-            @foreach (var pic in Model.BlogImages)
+            if (@Model.ArticleImages.Count > 0)
             {
-                <img src="~/Images/buttons/gen_image.jpg" />
+                <img src="/Images/ArticlesImages/@Model.GetImgURL()" />
+            }
+            else
+            {
+                <img src="/Images/ArticlesImages/gen_image.jpg" />
             }
         }
     </figure>
@@ -16,11 +20,11 @@
         <div class="descriptio_part">
             @if(Model!=null)
             {
-                <h3>
-                    @Model.MessageTitle
-                </h3>
+                <h4>
+                    @Model.Title 
+                </h4>
                 <p>
-                    @Model.MessageBody
+                    @Model.Content
                 </p>
             }
         </div>
@@ -28,32 +32,22 @@
             <div class="key_words_keyword">KeyWords:</div>
             @if (Model != null)
             {
-                <div class="key_words_list">@Model.MessageKeyWords</div>
+                <div class="key_words_list">@Model.KeyWords</div>
             }
         </div>
-    
-    <div class="buttons_area">
+    </div>
+        <div class="buttons_area">
         @* see details*@
 
             <span class="icon_menu first" title="take a look...">
-                <img @onclick="Details" src="~/Images/buttons/details32.png" />
+                <div @onclick="Details"><i class="fa-solid fa-info"></i></div>
             </span>
-            
             @* delete*@
-            <span class="icon_menu first" title="see code...">
-@*                 <a href="@Model.getCodeUrl()" target="_blank">
-                    @if (Model.IsOnline)
-                    {
-                        <i class="fa-solid fa-code"></i>
-                    }
-                    else
-                    {
-                        <span class="offline_labels">Code</span>
-                    }
-                </a> *@
+            <span class="icon_menu" title="Toggle visiability">
+                <div @onclick="ToggleVisiability"><i class="fa-solid fa-eye-low-vision"></i></div>
             </span>
         </div>
-    </div>
+    
 </div>
 @code {
     [Parameter]
@@ -65,8 +59,11 @@
     {
         if (Model is not null)
         {
-            NavigationManager.NavigateTo($"/blogmessage/{Model.Id}");
+            NavigationManager.NavigateTo($"/blogmessage/{Model.MessageId}");
         }
     }
-
+    private void ToggleVisiability()
+    {
+        
+    }
 }

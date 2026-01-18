@@ -1,0 +1,20 @@
+﻿@page "/editblog/{IdBlog:int}"
+@using MRWBlogs.Models.Blogs
+@layout GeneralLayout
+@rendermode InteractiveServer
+<BlogActionsComponent modelActionsBlog="modelBlog" />
+
+@code {
+    [Parameter]
+    public int IdBlog{ get; set; }
+    EditBlogVM modelBlog = new();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            modelBlog= new EditBlogVM(IdBlog);
+            StateHasChanged();
+        }
+    }
+}

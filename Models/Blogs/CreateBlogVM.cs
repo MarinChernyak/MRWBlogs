@@ -1,70 +1,33 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MRWBlobs_DAL.Entities;
 using MRWBlogs.Models.Shared;
+using MRWBlogs_DAL.Entities;
 using SMCommonUtilities;
 using static MRWBlogs.Models.Shared.HolderMessageVM;
 
 namespace MRWBlogs.Models.Blogs
 {
-    public class CreateBlogVM: BlogBaseModel
+    public class CreateBlogVM: BlogActions
     {
      
         public CreateBlogVM()
         {
         }
 
-        protected async Task<MessageContainer> UploadAsync(IWebHostEnvironment? env, IBrowserFile file )
+        protected override int GetMaxSize()
         {
-
-            MessageContainer message = new ();
-            LogMaster lm = new ();
-            try
-            {
-
-                if (file != null && env!=null )
-                {
-                    // Set the maximum allowed file size (e.g., 50kB)
-                    var maxFileSize = 50 * 1024;
-
-                    string fname = GetAvatarFileName(file);
-                    // Define the server path
-                    string uploadPath = Path.Combine(env.WebRootPath, Constants.AvatarsFolder, fname);
-                    try
-                    {
-                        // Copy the stream to a file on the server
-                        await using var stream = new FileStream(uploadPath, FileMode.Create);
-                        await file.OpenReadStream(maxFileSize).CopyToAsync(stream);
-
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                        lm.SetLogException("CreateBlogVM", "UploadAsync", ex.Message);
-                        message= new( $"The selected avtar is exciding 50kb. Please select another one.", MessageType.Error);
-                    }
-                }
-                message = new($"The selected avatar uploaded successfully!", MessageType.Info);
-
-            }
-            catch (Exception ex)
-            {
-                lm.SetLogException("CreateBlogVM", "UploadAsync", ex.Message);
-                message = new($"Error uploading files: {ex.Message}", MessageType.Error);
-            }
-               
-           
-            return message;
+            return 50 * 1024; // 50 KB
         }
-        private string GetAvatarFileName(IBrowserFile file)
+        protected override string GetImgFolder()
         {
-            string fname = file.Name;
-            int dotIndex = fname.LastIndexOf('.');
-            string ext = fname.Substring(dotIndex + 1).ToLower();
-            fname = $"avatar_{IdOwner}.{ext}";
+            return Constants.AvatarsFolder;
+        }
+        protected override string GetImageFileName(IBrowserFile file)
+        {
+            string fname = Guid.NewGuid().ToString() + Path.GetExtension(file.Name);
             return fname;
         }
-        public async Task<MessageContainer> CreateBlogAsync(IWebHostEnvironment? env, IBrowserFile file, string token, string keywords)
+        public override async Task<MessageContainer> DoBlogActionAsync(IWebHostEnvironment? env, IBrowserFile file, string token, string keywords)
         {
             MessageContainer? msg = null;
             if (! await IsBlogExisting(token)) //it is just to prevent double clicking
@@ -78,11 +41,12 @@ namespace MRWBlogs.Models.Blogs
                         Title = Title,
                         CreatedAt = DateTime.Now,
                         UpdatedAt = DateTime.Now,
-                        Avatar = GetAvatarFileName(file),
+                        Avatar = GetImageFileName(file),
                         UserId = IdOwner,
                         IsPublished = true,
                         Keywords = keywords,
-                        VisibilityId = 1
+                        VisibilityId = 1,
+                        Description = Description
                     };
                     context.Blogs.Add(newBlog);
                     try
@@ -104,7 +68,7 @@ namespace MRWBlogs.Models.Blogs
                     // If there was an error or warning during upload, we might want to clean up the uploaded file
                     if (env != null)
                     {
-                        string uploadPath = Path.Combine(env.WebRootPath, Constants.AvatarsFolder, GetAvatarFileName(file));
+                        string uploadPath = Path.Combine(env.WebRootPath, Constants.AvatarsFolder, GetImageFileName(file));
                         if (File.Exists(uploadPath))
                         {
                             try

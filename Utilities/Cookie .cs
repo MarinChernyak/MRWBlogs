@@ -30,6 +30,7 @@ namespace MRWBlogs.Utilities
 
         public async Task<string> GetValue(string key, string def = "")
         {
+            def =string.Empty;
             var cValue = await GetCookie();
             if (string.IsNullOrEmpty(cValue)) return def;
 

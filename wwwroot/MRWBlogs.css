@@ -120,10 +120,14 @@ fieldset {
     display:block;
     min-height:3rem;
    margin-top:1rem;
+   width:68.5rem;
 }
 
 .midium_txt {
-    width: 500px;
+    width: 35rem;
+}
+.wide_txt {
+    width: 70rem;
 }
 .alink {
     color: moccasin;
@@ -195,7 +199,18 @@ h3 {
 .dispInlineBlock {
     display: inline-block;
 }
-.dispInline{
-    display: flex;
-    flex:
+
+/*****Buttons etc.*********/
+.ButtonsRuler{
+    height:4rem;
+    background-color:#050228;
+    display:block;
+    border:solid 1px navy;
+    border-radius:3px;
+    padding:10px;
+}
+.button_in_line {
+
+    display: inline-block;
+    position: relative;
 }

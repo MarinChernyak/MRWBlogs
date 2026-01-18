@@ -1,4 +1,9 @@
-﻿
+﻿h4 {
+    color: dimgray;
+    font-family: 'Segoe UI';
+    font-size:1.5rem;
+    font-weight:bold;
+}
 .BlogSummaryView {
     background-color: lightgrey;
     border: 1px solid navy;
@@ -18,12 +23,13 @@
     display: inline-block;
     vertical-align: top;
 }
-.img_room img {
-    border: 1px solid #333;
-    aspect-ratio: auto;
-    width: 100%;
-    display: block;
-}
+
+    .img_room img {
+        border: 1px solid #333;
+        aspect-ratio: auto;
+        width: 100%;
+        display: block;
+    }
 /******LeftArea end**********/
 /*          Main Area     */
 .main_part_room {
@@ -31,8 +37,11 @@
     padding: 10px;
     border: 1px solid darkgrey;
     display: inline-block;
+    margin-top:10px;
 }
-
+.description{
+    height:100%;
+}
 .descriptio_part {
     height: 80%;
     display: block;
@@ -74,6 +83,7 @@
     vertical-align: top;
     margin-left: auto;
     margin-right: auto;
+    background-color:blanchedalmond;
 }
 
     .icon_menu a {
@@ -93,6 +103,7 @@
     }
 
     .buttons_area {
+
         display: block;
         text-align: left;
         margin-left: 16%;
@@ -101,5 +112,8 @@
         width: 60%;
         min-height: 30px;
         vertical-align: central;
+    }
+    .pointer{
+        cursor:pointer;
     }
 }

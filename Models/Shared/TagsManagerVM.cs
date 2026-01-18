@@ -11,6 +11,13 @@ namespace MRWBlogs.Models.Shared
         {
            
         }
+        public TagsManagerVM(string tagsLine)
+        {
+            if (!string.IsNullOrEmpty(tagsLine))
+            {
+                SelectedTags = tagsLine.Split(',').ToList();
+            }
+        }
         public string GetTagsAsString()
         {
             return string.Join(",", SelectedTags);

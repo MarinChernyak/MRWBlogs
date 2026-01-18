@@ -1,83 +1,11 @@
 ﻿@page "/createblog"
 @using MRWBlogs.Models.Blogs
-@using MRWBlogs.Models.Shared;
-@using MRWBlogs.Components.Shared;
 @layout GeneralLayout
 @rendermode InteractiveServer
-@using MRWBlogs.Utilities
-@using Microsoft.AspNetCore.Hosting
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@using Microsoft.Extensions.Hosting
-@using static MRWBlogs.Models.Shared.HolderMessageVM
-@inject IWebHostEnvironment WebHostEn
-@inject NavigationManager NavigationManager
+<BlogActionsComponent modelActionsBlog="modelCreateBlog" />
 
-
-<EditForm FormName="frmCreateBlog" Model="modelCreateBlog" OnSubmit="HandleSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary class="text-danger" />
-      <section id="MainReg">
-        <div class="container">
-           
-
-            <_HolderMessage _model="@holderMessageVM"  />
-          </div>
-          <div class="container">
-              <fieldset>
-                <legend>Create New Blog</legend>
-                <div class="mb-3">
-                    <label class="form-label labels_of_controls" accesskey=" ">Title</label>
-                    <input type="text" class="form-control midium_txt" id="txtBlogTitle" placeholder="Blog Title is required" @bind-value="modelCreateBlog.Title">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label labels_of_controls" accesskey=" ">Select a picture for avatar</label>
-                    <InputFile OnChange="OnInputFileChange" class="form-control midium_txt" accept=".jpg, .png" />
-                </div>
-                <_TagsManager model="@tagsModel" />
-                <div class="col-md-3 mt-3">
-                    <button class="btn btn-outline-light btn-txt">Submit</button>
-                </div>
-            </fieldset>
-           
-          </div>
-     </section>
-</EditForm>
 @code {
-    [Inject]
-    public ICookie? cookie { get; set; }
-    [Inject]
-    public IWebHostEnvironment? environment { get; set; }
     CreateBlogVM modelCreateBlog = new CreateBlogVM();
-    private TagsManagerVM tagsModel = new TagsManagerVM();
-    HolderMessageVM holderMessageVM = new HolderMessageVM();
-    private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
-    private void OnInputFileChange(InputFileChangeEventArgs e)
-    {
-        selectedFiles = e.GetMultipleFiles().ToList();
-    }
-    private async Task HandleSubmit()
-    {
-        holderMessageVM.ClearMessage();
-        string token = string.Empty;
-        if(cookie != null)
-        {
-
-            holderMessageVM.IsProcesing = true;
-            token = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken);
-        }
-       
-        MessageContainer msg = await modelCreateBlog.CreateBlogAsync(environment, selectedFiles[0], token, tagsModel.GetTagsAsString());
-        if (msg.MsgType != MessageType.Success)
-        {
-            holderMessageVM.SetMessage(msg.Message,msg.MsgType);
-            StateHasChanged();
-        }
-        else
-        {
-            NavigationManager.NavigateTo("/", forceLoad: true); 
-        }
-
-
-    }
+    
 }
 

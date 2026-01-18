@@ -1,4 +1,5 @@
 ﻿using MRWBlobs_DAL.Entities;
+using MRWBlogs_DAL.Entities;
 
 namespace MRWBlogs.Models.Blogs
 {

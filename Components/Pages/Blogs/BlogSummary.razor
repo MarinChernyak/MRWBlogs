@@ -1,21 +1,25 @@
 ﻿@using MRWBlogs.Models.Blogs
 @using MRWBlogs.Utilities
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <div class="BlogSummaryView">
     <figure class="img_room">
         @if (Model != null)
         {
-           <img src="~/Images/buttons/gen_image.jpg" />           
+           <img src="/Images/Avatars/@Model.AvatarUrl" />           
         }
     </figure>
     <div class="main_part_room">
         <div class="descriptio_part">
             @if (Model != null)
             {
-                <h3>
-                    @Model.Title
-                </h3>
+                <h4>
+                    @Model.Title 
+                </h4>
+                <p class="description">
+                    @Model.Description
+                </p>
             }
         </div>
         <div class="key_words_part">
@@ -25,21 +29,31 @@
                 <div class="key_words_list">@Model.Keywords</div>
             }
         </div>
-
-        <div class="buttons_area">
-            @* see details*@
-
-            <span class="icon_menu first" title="take a look...">
-                <img @onclick="BlogDetails" src="~/Images/buttons/details32.png" />
-            </span>
-
-            @* delete*@
-            <span class="icon_menu" title="...">
-
-            </span>
-        </div>
     </div>
-</div>
+    <div class="buttons_area">
+        @* see details*@
+
+        <span class="icon_menu first" title="take a look...">
+            <div @onclick="BlogDetails"><i class="fa-solid fa-info"></i></div>
+        </span>
+        @* vidsibility*@
+        <span class="icon_menu" title="Toggle visiability">
+            <div @onclick="ToggleVisiability"><i class="fa-solid fa-eye-low-vision"></i></div>
+        </span>
+        <span class="icon_menu" title="Edit" @onclick="EditBlogParameters">
+            <i class="fa-regular fa-pen-to-square"></i>
+        </span>
+        @* delete*@
+@*         <span class="icon_menu" title="Delete blog">
+            <div @onclick="DeactivateBlog"><i class="fa-solid fa-recycle"></i></div>
+        </span> *@
+        <span class="icon_menu" title="Delete blog">
+            <div @onclick="DeactivateBlog"><img src="/Images/buttons/delete32.png" /></div>
+        </span>
+
+    </div>
+ </div>
+
 @code {
     [Parameter]
     public BlogSummaryModel? Model { get; set; }
@@ -49,9 +63,26 @@
     private void BlogDetails()
     {
         if (Model is not null)
-        {
-            NavigationManager.NavigateTo($"/blogmessage/{Model.Id}");
+        {         
+            NavigationManager.NavigateTo($"/blogdetails/{Model.Id}");
         }
     }
+    private void DeactivateBlog()
+    {
 
+    }
+    private void ToggleVisiability()
+    {
+
+    }
+    private void EditBlogParameters()
+    {
+        if(Model!=null)
+            NavidateToEdit(Model.Id);
+
+    }
+    private void NavidateToEdit(int IdBlog)
+    {
+        NavigationManager.NavigateTo($"/editblog/{IdBlog}");
+    }
 }

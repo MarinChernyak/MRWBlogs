@@ -1,0 +1,58 @@
+﻿@using MRWBlogs.Models.Blogs
+@using MRWBlogs.Models.Shared;
+@using MRWBlogs.Components.Shared;
+@rendermode InteractiveServer
+@using MRWBlogs.Utilities
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Microsoft.Extensions.Hosting
+
+
+
+
+
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+    <section id="MainReg">
+
+        <div class="container">
+            <fieldset>
+                <legend>Create a New Blog's Article</legend>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls" accesskey=" ">Title</label>
+
+                    <input type="text" class="form-control midium_txt" id="txtBlogTitle" placeholder="No Title" @bind-value="Model.Title">
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls" accesskey=" ">Content</label>
+                    <textarea id="txtDescription" name="w3review" rows="4" cols="50" class="form-control midium_txt" @bind="Model.Content">
+                        
+                    </textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label labels_of_controls" accesskey=" ">Add a picture</label>
+                    <InputFile OnChange="OnInputFileChange" class="form-control midium_txt" accept=".jpg, .png" />
+                </div>
+                <_TagsManager model="@Model.TagsManagerVM" />
+                <div class="col-md-3 mt-3">
+                    <button class="btn btn-outline-light btn-txt">Submit</button>
+                </div>
+            </fieldset>
+
+        </div>
+    </section>
+
+@code {
+
+    [Parameter]
+    public required MessageActions Model { get; set; }   
+    
+   
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        Model.SelectedFiles = e.GetMultipleFiles().ToList();
+    }
+
+}
+

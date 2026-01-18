@@ -1,31 +1,83 @@
-﻿@page "/blogdetails"
+﻿@page "/blogdetails/{BlogId:int}"
+@using MRWBlogs.Models.Blogs
 @using MRWBlogs.Models.Shared
 @using MRWBlogs.Utilities
-
-    <DataAnnotationsValidator />
-    <ValidationSummary class="text-danger" />
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+   
+    
       <section id="MainReg">
         <div class="container">
-           
 
-            <_HolderMessage _model="@holderMessageVM"  />
+        @if (Model != null)
+        {
+            <_HolderMessage _model="@Model.HolderMessageVM" />
+        }
           </div>
           <div class="container">
               <fieldset>
-                <legend>List of my blog's artiles</legend>
+                <legend>List of my blog's articles</legend>
                 <div class="mb-3">
-
-               </div>
+                @if (Model != null)
+                {
+                    @foreach (var msg in Model.BlogMessages)
+                    {
+                        <BlogsMessageSummary Model="@msg" />
+                    }
+                }
+                else
+                {
+                    <h3>No messages found</h3>
+                }
+            </div>
             </fieldset>
         </div>
     </section>
+<section id="ButtonsRuler" class="ButtonsRuler">
+    <button class="btn button_in_line btn-outline-light btn-txt fs-6" id="btnNew" @onclick="AddNewMessage">Add New Message</button>
+</section>
 
 @code {
     [Inject]
     public ICookie? cookie { get; set; }
     [Parameter]
-    public BlogDetails? Model { get; set; }
-    HolderMessageVM holderMessageVM = new HolderMessageVM();
-    private string token = string.Empty;
+    public int BlogId { get; set; }
+    [Parameter]
+    public string token { get; set; } = string.Empty;
+
+    public BlogDetailsModel? Model { get; set; }
+
+    private void AddNewMessage()
+    {
+        if(Model!=null)
+        {
+            //MessageActions model = new MessageCreate(Model.Id);
+            NavigationManager.NavigateTo($"/addnewarticle/{BlogId}");
+        }
+    }
+    protected override void OnParametersSet()
+    {
+        if (cookie != null)
+        {
+            _ = cookie.GetValue(SMAuthentication.Constants.Values.UserToken, token);
+        }
+        // Initialize your model (e.g., fetch from a service/database)
+        Model = new BlogDetailsModel(BlogId, token);
+    }
+    // protected override void OnAfterRender(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         if(cookie != null)
+    //         {
+    //             _ = cookie.GetValue(SMAuthentication.Constants.Values.UserToken, token);
+    //         }
+    //         // Initialize your model (e.g., fetch from a service/database)
+    //         Model = new BlogDetailsModel(BlogId, token);
+    //         StateHasChanged();
+    //     }
+
+    // }
+
 
 }

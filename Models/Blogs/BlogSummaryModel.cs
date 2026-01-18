@@ -1,5 +1,5 @@
 ﻿using Authentication.Migrations;
-using MRWBlobs_DAL.Entities;
+using MRWBlogs_DAL.Entities;
 using SMAuthentication.SMGeneralEntities;
 
 namespace MRWBlogs.Models.Blogs
@@ -27,7 +27,8 @@ namespace MRWBlogs.Models.Blogs
                 AvatarUrl = blog.Avatar??string.Empty;
                 CreatedAt = blog.CreatedAt;
                 OwnerId = blog.UserId;
-                NumberMessages = context.BlogsMessages.Where(x => x.BlogId == Id).ToList().Count;                
+                NumberMessages = context.BlogsMessages.Where(x => x.BlogId == Id).ToList().Count;
+                Description = blog.Description;
             }
             if (OwnerId > 0)
             {

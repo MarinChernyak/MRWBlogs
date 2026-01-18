@@ -19,12 +19,17 @@
         <label class="form-label labels_of_controls">Selected tags</label>
         <div class="div_ctrl_btn">
         <div class="div_ctrl">
-            <select class="form-control midium_txt dispInline" id="cmbExitingTags" @bind="@remSelectedTag">
-                <option value="@Constants.SelctOptionValue" >@Constants.SelctOptionTxt</option>
-                @foreach (var tag in model.SelectedTags)
+                <select class="form-control midium_txt dispInline" id="cmbExitingTags" @bind="@remSelectedTag">
+                @if (model.SelectedTags.Count==0)
                 {
-
-                    <option value="@tag">@tag </option>
+                        <option value="@Constants.SelctOptionValue" >@Constants.SelctOptionTxt</option>
+                    }
+                    else
+                    {
+                        @foreach (var tag in model.SelectedTags)
+                    {
+                        <option value="@tag" selected>@tag </option>                          
+                    }
                 }
             </select>
         </div>
@@ -45,6 +50,16 @@
     public TagsManagerVM model { get; set; } = new();
     private string newtag { get; set; } = string.Empty;
     private string remSelectedTag { get; set; } = Constants.SelctOptionValue;
+    private bool realyFirst = true;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (model.SelectedTags.Count > 0 && realyFirst)
+        {
+            realyFirst = false;
+            remSelectedTag = model.SelectedTags[0];
+            StateHasChanged();
+        }
+    }
 
     private void RemoveSelTag()
     {

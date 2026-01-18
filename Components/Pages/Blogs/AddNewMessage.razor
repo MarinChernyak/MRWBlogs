@@ -1,0 +1,55 @@
+﻿@using MRWBlogs.Models.Blogs
+@using MRWBlogs.Models.Shared
+@using MRWBlogs.Utilities
+@using static MRWBlogs.Models.Shared.HolderMessageVM
+@inject NavigationManager NavigationManager
+@using MRWBlogs.Components.Shared
+
+@page "/addnewmessage/{BlogId:int}"
+<div class="container">
+    <_HolderMessage _model="@Model.holderMessageVM" />
+</div>
+<EditForm FormName="frmCreateBlogMessage" Model="Model" OnSubmit="HandleSubmit">
+    <MessageActionComponent Model="Model"></MessageActionComponent>
+    <div class="col-md-3 mt-3">
+        <button class="btn btn-outline-light btn-txt">Submit</button>
+    </div>
+</EditForm>
+@code {
+    [Parameter]
+    public int BlogId { get; set; }
+    [Inject]
+    public ICookie? cookie { get; set; }
+    [Inject]
+    public IWebHostEnvironment? environment { get; set; }
+    public MessageCreate Model = new();
+
+   private async Task HandleSubmit()
+    {
+        Model.holderMessageVM.ClearMessage();
+        string token = string.Empty;
+        if (cookie != null)
+        {
+
+            Model.holderMessageVM.IsProcesing = true;
+            token = await cookie.GetValue(SMAuthentication.Constants.Values.UserToken, token);
+
+        }
+        if (Model != null)
+        {
+            MessageContainer msg = await Model.DoMessageActionAsync(environment, Model.SelectedFiles[0], token, Model.TagsManagerVM.GetTagsAsString());
+            if (msg.MsgType != MessageType.Success)
+            {
+                Model.holderMessageVM.SetMessage(msg.Message, msg.MsgType);
+                StateHasChanged();
+            }
+            else
+            {
+                NavigationManager.NavigateTo($"/blogdetails/{Model.BlogId}/{token}");
+            }
+        }
+
+
+    }
+
+}
